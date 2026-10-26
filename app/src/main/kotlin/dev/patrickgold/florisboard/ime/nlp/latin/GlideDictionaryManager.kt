@@ -71,14 +71,15 @@ object GlideDictionaryManager {
         val dictSpec = GlideDictionaryCatalog.forLang(code)
         val bigramSpec = BigramCatalog.forLang(code)
         val trigramSpec = TrigramCatalog.forLang(code)
-        val needDict = !dictBundled && dictSpec != null && !isInstalled(context, code)
+        val needDict = code !in GlideDictionaryCatalog.BUNDLED && !dictBundled &&
+            dictSpec != null && !isInstalled(context, code)
         // The bigram file (autocorrect context, Tier 2) is fetched together with the glide dictionary when
         // an input language is added; also downloads on its own if the dict is already present from before.
-        val needBigram = bigramSpec != null && !bigramInstalled(context, code)
+        val needBigram = code !in BigramCatalog.BUNDLED && bigramSpec != null && !bigramInstalled(context, code)
         // The trigram file (issue #334) rides along on the same trigger. It has no bundled languages —
         // English included — because unlike the bigram table it feeds nothing but suggestions, so a
         // language it has not reached yet simply predicts the way it did before.
-        val needTrigram = trigramSpec != null && !trigramInstalled(context, code)
+        val needTrigram = code !in TrigramCatalog.BUNDLED && trigramSpec != null && !trigramInstalled(context, code)
         if (!needDict && !needBigram && !needTrigram) return
         if (!active.add(code)) return
         val appContext = context.applicationContext

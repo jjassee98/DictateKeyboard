@@ -3,7 +3,7 @@
   "meta": {
     "id": "org.florisboard.themes",
     "version": "0.4.0",
-    "title": "Dictate Keyboard default themes",
+    "title": "Jasse Keyboard themes",
     "description": "Default themes (both day and night) for the keyboard UI",
     "maintainers": [
       "patrickgold <patrick@patrickgold.dev>",
@@ -15,85 +15,149 @@
     {
       "id": "dictate_glass",
       "label": "Dictate Glass",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": true
     },
     {
       "id": "dictate_glass_clear",
       "label": "Dictate Glass Clear",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": true
     },
     {
       "id": "dictate_sand",
       "label": "Dictate Sand (Day)",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": false
     },
     {
       "id": "dictate_deep",
       "label": "Dictate Deep (Night)",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": true
     },
     {
       "id": "dictate_contrast",
       "label": "Dictate High Contrast (Day)",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": false
     },
     {
       "id": "dictate_contrast_night",
       "label": "Dictate High Contrast (Night)",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": true
     },
     {
       "id": "dictate_eink",
       "label": "Dictate E-Ink (Day)",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": false
     },
     {
       "id": "dictate_eink_night",
       "label": "Dictate E-Ink (Night)",
-      "authors": [ "DevEmperor" ],
+      "authors": [
+        "DevEmperor"
+      ],
       "isNight": true
     },
     {
       "id": "floris_day",
       "label": "Dictate Day",
-      "authors": [ "patrickgold" ],
+      "authors": [
+        "patrickgold"
+      ],
       "isNight": false
     },
     {
       "id": "floris_day_borderless",
       "label": "Dictate Day (Borderless)",
-      "authors": [ "patrickgold" ],
+      "authors": [
+        "patrickgold"
+      ],
       "isNight": false
     },
     {
       "id": "floris_night",
       "label": "Dictate Night",
-      "authors": [ "patrickgold" ],
+      "authors": [
+        "patrickgold"
+      ],
       "isNight": true
     },
     {
       "id": "floris_night_borderless",
       "label": "Dictate Night (Borderless)",
-      "authors": [ "patrickgold" ],
+      "authors": [
+        "patrickgold"
+      ],
       "isNight": true
     },
     {
       "id": "floris_pure_night",
       "label": "Dictate Pure Night",
-      "authors": [ "serebit" ],
+      "authors": [
+        "serebit"
+      ],
       "isNight": true
     },
     {
       "id": "floris_pure_night_borderless",
       "label": "Dictate Pure Night (Borderless)",
-      "authors": [ "serebit" ],
+      "authors": [
+        "serebit"
+      ],
+      "isNight": true
+    },
+    {
+      "id": "jasse_amoled",
+      "label": "Jasse AMOLED",
+      "authors": [
+        "Jasse Keyboard contributors",
+        "DevEmperor"
+      ],
+      "isNight": true
+    },
+    {
+      "id": "jasse_rose",
+      "label": "Jasse Rosa",
+      "authors": [
+        "Jasse Keyboard contributors",
+        "DevEmperor"
+      ],
+      "isNight": true
+    },
+    {
+      "id": "jasse_purple",
+      "label": "Jasse Lila",
+      "authors": [
+        "Jasse Keyboard contributors",
+        "DevEmperor"
+      ],
+      "isNight": true
+    },
+    {
+      "id": "jasse_neon",
+      "label": "Jasse Neon",
+      "authors": [
+        "Jasse Keyboard contributors",
+        "DevEmperor"
+      ],
       "isNight": true
     }
   ]

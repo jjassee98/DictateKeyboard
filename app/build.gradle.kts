@@ -34,6 +34,8 @@ val projectTargetSdk: String by project
 val projectCompileSdk: String by project
 val projectVersionCode: String by project
 val projectVersionName: String by project
+// Both requested Galaxy devices are ARM64. Set -PjasseArm64Only=true for a smaller test download.
+val jasseArm64Only = providers.gradleProperty("jasseArm64Only").map { it.toBoolean() }.getOrElse(false)
 val projectVersionNameSuffix = projectVersionName.substringAfter("-", "").let { suffix ->
     if (suffix.isNotEmpty()) {
         "-$suffix"
@@ -68,7 +70,7 @@ configure<ApplicationExtension> {
     }
 
     defaultConfig {
-        applicationId = "net.devemperor.dictate"
+        applicationId = "se.jasse.keyboard"
         minSdk = projectMinSdk.toInt()
         targetSdk = projectTargetSdk.toInt()
         versionCode = projectVersionCode.toInt()
@@ -84,7 +86,7 @@ configure<ApplicationExtension> {
         // account. Real users pay nothing for it — the bundle is split per architecture, so a phone
         // only ever downloads the libraries it can run. See tools/fetch-sherpa-onnx.sh.
         ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+            abiFilters += if (jasseArm64Only) listOf("arm64-v8a") else listOf("arm64-v8a", "armeabi-v7a", "x86_64")
         }
 
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash().get()}\"")
@@ -126,6 +128,13 @@ configure<ApplicationExtension> {
         null
     }
     signingConfigs {
+        // Optional stable TEST certificate supplied from a GitHub Actions secret, never committed.
+        // Without it Android's ordinary local debug signing remains available.
+        getByName("debug") {
+            providers.gradleProperty("jasseTestKeystore").orNull?.let { path ->
+                storeFile = file(path)
+            }
+        }
         keystoreProps?.let { props ->
             create("release") {
                 storeFile = rootProject.file(props.getProperty("storeFile"))

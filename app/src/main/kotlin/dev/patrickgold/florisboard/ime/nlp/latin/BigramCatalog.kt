@@ -54,7 +54,7 @@ object BigramCatalog {
     const val REL = "https://github.com/DevEmperor/DictateKeyboard/releases/download/bigram-dicts-v1"
 
     /** Languages whose bigram file ships in the APK ([ime/dict/<lang>_bigrams.txt]) — never downloaded/deleted. */
-    val BUNDLED = setOf("en")
+    val BUNDLED = setOf("en", "sv")
 
     val all: List<BigramDict> = listOf(
         BigramDict("af", "$REL/af_bigrams_150k.txt", 2224272, "9a1f2a3459617dfac8c68bcc96c568a4b674ccf2d9490dc1444fd85a094c6931"),

@@ -1733,6 +1733,35 @@ class LatinLanguageProvider(context: Context) : SpellingProvider, SuggestionProv
         // words needs it right here.
         val learnedSnapshot = learnedSnapshotFor(subtype)
 
+        // Jasse: language-specific evidence complements the existing tap/edit-distance readers.
+        // A word accepted in English, or learned locally even once, is protected before splitting.
+        // Only key presses may trigger a silent replacement; pasted/dictated text gets tap offers.
+        val swedishProposals = if (index.lang == "sv" && !isKnown) {
+            SwedishCorrections.propose(
+                word = word,
+                frequency = { index.freq[it] ?: 0 },
+                pairCount = bigramsFor(subtype)::countOf,
+                protectedWord = (learnedSnapshot?.scoreOfKey(index.fold(word)) ?: 0.0) > 0.0,
+                strength = prefs.correction.autoCorrectStrength.get(),
+                spellingEnabled = prefs.correction.swedishSpelling.get(),
+                spacingEnabled = prefs.correction.swedishMissingSpaces.get(),
+            )
+        } else emptyList()
+        if (swedishProposals.isNotEmpty()) {
+            out[word.lowercase()] = WordSuggestionCandidate(
+                text = word, confidence = 1.0, sourceProvider = this,
+            )
+            swedishProposals.forEach { proposal ->
+                out[proposal.text.lowercase()] = WordSuggestionCandidate(
+                    text = proposal.text,
+                    confidence = 0.95,
+                    isEligibleForAutoCommit = autoCorrectOn && proposal.mayAutoCommit &&
+                        TouchTrace.wasFullyTyped(word),
+                    sourceProvider = this,
+                )
+            }
+        }
+
         // The user's own words that extend what is being typed. They used to go into the strip right here,
         // ahead of everything the dictionary had to offer, so a single typed letter put a contact's surname
         // in front of the word everybody writes (issue #264). They are merged into the ranked walk below
@@ -2016,7 +2045,7 @@ class LatinLanguageProvider(context: Context) : SpellingProvider, SuggestionProv
             // never committed — it is only drawn bold, which is a lie about what Space is going to take.
             // The dictionary fixes below already follow this rule against the personal ones.
             val slotClaimed = out.values.any { it.isEligibleForAutoCommit }
-            val allowAutoCommit = autoCorrectOn && !slotClaimed && when {
+            val allowAutoCommit = autoCorrectOn && !slotClaimed && swedishProposals.isEmpty() && when {
                 // Decoded from the taps: act only when the fingers really were near that key. This replaces
                 // the `hadCandidatesBefore` gate, which suppressed 2.7 % of otherwise correct fixes merely
                 // because the typo prefixed some dictionary word — while a bare "a correction exists" rule

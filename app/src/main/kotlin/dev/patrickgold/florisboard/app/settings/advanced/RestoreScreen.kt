@@ -100,7 +100,7 @@ object Restore {
     // Dictate's own application id (base, without the .debug/.beta variant suffixes) — a backup whose
     // metadata package starts with this is a genuine Dictate backup, not a "third-party" one. Was still
     // the upstream FlorisBoard id after the fork, which made every Dictate backup falsely warn.
-    const val PACKAGE_NAME = "net.devemperor.dictate"
+    const val PACKAGE_NAME = "se.jasse.keyboard"
     const val BACKUP_ARCHIVE_FILE_NAME = "backup.zip"
 }
 

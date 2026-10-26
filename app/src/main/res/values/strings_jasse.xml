@@ -1,0 +1,6 @@
+<resources>
+    <string name="jasse_swedish_spelling_title">Swedish spelling improvements</string>
+    <string name="jasse_swedish_spelling_summary">Offer fixes for common Swedish misspellings. Your own words and words in your other keyboard languages are protected.</string>
+    <string name="jasse_swedish_spacing_title">Suggest missing Swedish spaces</string>
+    <string name="jasse_swedish_spacing_summary">Offer “du märker” for “dumärker”. Only strongly supported phrases replace typed text on Space; uncertain splits need a tap.</string>
+</resources>

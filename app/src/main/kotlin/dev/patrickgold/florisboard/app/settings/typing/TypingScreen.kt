@@ -104,6 +104,18 @@ fun TypingScreen() = FlorisScreen {
                 },
             )
             SwitchPreference(
+                prefs.correction.swedishSpelling,
+                title = stringRes(R.string.jasse_swedish_spelling_title),
+                summary = stringRes(R.string.jasse_swedish_spelling_summary),
+                enabledIf = { prefs.suggestion.enabled isEqualTo true },
+            )
+            SwitchPreference(
+                prefs.correction.swedishMissingSpaces,
+                title = stringRes(R.string.jasse_swedish_spacing_title),
+                summary = stringRes(R.string.jasse_swedish_spacing_summary),
+                enabledIf = { prefs.suggestion.enabled isEqualTo true },
+            )
+            SwitchPreference(
                 prefs.suggestion.multilingualTyping,
                 modifier = Modifier.settingsSearchAnchor("pref__suggestion__multilingual_typing__label"),
                 title = stringRes(R.string.pref__suggestion__multilingual_typing__label),

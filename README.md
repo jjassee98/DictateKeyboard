@@ -1,3 +1,16 @@
+# Jasse Keyboard ⌨️
+
+Egen vidareutveckling av Dictate Keyboard i Jasses fork.
+
+- [Installera, bygg från mobilen och se aktuell funktionsstatus](docs/JASSE.md)
+- [Svenska språkdata och rättningsregler](docs/SWEDISH-DATA.md)
+- [Molnbuild och APK-filer](https://github.com/jjassee98/DictateKeyboard/actions)
+
+Nedan följer originalprojektets dokumentation. Funktioner och Play-länkar där avser även
+originalet; se Jasse-guiden för vad som är verifierat i den egna testversionen.
+
+---
+
 <div align="center">
 
 <img src="img/Icon_512x512_2_round.png" alt="Dictate Keyboard logo" width="120">

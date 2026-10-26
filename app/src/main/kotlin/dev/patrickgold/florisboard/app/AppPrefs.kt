@@ -218,6 +218,14 @@ abstract class FlorisPreferenceModel : PreferenceModel() {
             key = "correction__auto_correct_strength",
             default = AutoCorrectStrength.BALANCED,
         )
+        val swedishSpelling = boolean(
+            key = "correction__swedish_spelling",
+            default = true,
+        )
+        val swedishMissingSpaces = boolean(
+            key = "correction__swedish_missing_spaces",
+            default = true,
+        )
         val autoSpacePunctuation = boolean(
             key = "correction__auto_space_punctuation",
             default = false,
