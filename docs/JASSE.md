@@ -39,10 +39,14 @@ med originalkoden. Detta är en felsökningssignerad testversion, inte en produk
 5. Öppna APK:n. Artefakten innehåller även installationsguiden och SHA-256-kontrollsumman.
    APK-artefakter sparas i 30 dagar; källkoden finns kvar och kan byggas igen.
 
-Flödet installerar Android SDK 36, NDK 29 och CMake, hämtar checksummeverifierade
+Flödet använder JDK 21 och installerar Android SDK 36, NDK 29 och CMake, hämtar checksummeverifierade
 talbibliotek, bygger den lokala översättningsmotorn, kör tester och bygger en signerad debug-APK.
 ARM64 väljs för dina två enheter så att onödiga emulator-/32-bitarsbibliotek inte behöver laddas ned.
 Native-biblioteken cachas efter sina byggindata. Tal-/AI-tjänster kontaktas inte av regressionstesterna.
+
+JDK 21 behövs för hela JVM-testsviten: JDK 17 delar upp vissa sammansatta emoji annorlunda
+än moderna Android och ger ett falskt fel i originalets teckenräkningstest. Byggprocessen
+begränsar också Java-minnet och kör Kotlin-kompilatorn i samma process för mindre molnmaskiner.
 
 ### Signering och uppdateringar
 

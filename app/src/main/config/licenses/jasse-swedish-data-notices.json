@@ -1,0 +1,6 @@
+{
+  "hash": "jasse-swedish-data-notices",
+  "name": "Swedish data — source and attribution notices",
+  "url": "https://github.com/jjassee98/DictateKeyboard/blob/jasse/first-test-apk/tools/glide-dict/ATTRIBUTION.md",
+  "content": "Bundled Swedish data are unchanged Dictate Keyboard release assets: glide-dicts-v1/sv.json, bigram-dicts-v1/sv_bigrams_150k.txt and trigram-dicts-v1/sv_trigrams_100k.txt.\n\nWord frequencies: OPUS / OpenSubtitles, J. Tiedemann, Parallel Data, Tools and Interfaces in OPUS, LREC 2012. https://opus.nlpl.eu/\n\nBigram and trigram context data: Leipzig Corpora Collection, Creative Commons Attribution (CC BY), copyright Universität Leipzig / Sächsische Akademie der Wissenschaften / InfAI. Goldhahn, Eckart & Quasthoff, Building Large Monolingual Dictionaries at the Leipzig Corpora Collection, LREC 2012. https://wortschatz.uni-leipzig.de/\n\nUpstream consulted Hunspell / LibreOffice Swedish dictionaries at build time for spelling filtering. The Hunspell source dictionary files are not bundled. Upstream source/licence attribution and generation details: https://github.com/DevEmperor/DictateKeyboard/blob/main/tools/glide-dict/ATTRIBUTION.md\n\nJasse's language-rule code and theme modifications are Apache-2.0. See the project LICENSE and NOTICE. No proprietary Gboard code or model is included."
+}

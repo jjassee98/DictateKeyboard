@@ -28,6 +28,10 @@ uppdelning kräver ett pronomen, belagda ordpar och en tydligt bättre kandidat.
 ger ett förslag att trycka på. `dumärker` ger `du märker`, men ordparet finns inte i den här
 korpusen och ersätts därför först när användaren väljer förslaget.
 
+Ignorerade stavnings-/mellanslagsförslag lärs inte automatiskt in som avsiktliga nya ord:
+annars skulle ett enda missat mellanslag slå ut framtida rättningsförslag. Ord som användaren
+uttryckligen har gjort betrodda eller lagt i sin ordlista är fortfarande skyddade.
+
 Rättningsstyrkan påverkar ordparströskeln. Båda nya funktionerna har egna inställningar under
 Skrivning. Autokorrigering avstängd innebär förslag utan automatisk ersättning. Bara text med
 matchande tangenttryckshistorik får ersättas automatiskt av de nya reglerna; diktering och

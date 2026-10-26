@@ -1404,6 +1404,24 @@ class LatinLanguageProvider(context: Context) : SpellingProvider, SuggestionProv
         }
     }
 
+    private suspend fun swedishCorrectionsFor(
+        word: String,
+        subtype: Subtype,
+        index: LowerIndex,
+        protectedWord: Boolean,
+    ): List<SwedishCorrections.Proposal> {
+        if (index.lang != "sv") return emptyList()
+        return SwedishCorrections.propose(
+            word = word,
+            frequency = { index.freq[it] ?: 0 },
+            pairCount = bigramsFor(subtype)::countOf,
+            protectedWord = protectedWord,
+            strength = prefs.correction.autoCorrectStrength.get(),
+            spellingEnabled = prefs.correction.swedishSpelling.get(),
+            spacingEnabled = prefs.correction.swedishMissingSpaces.get(),
+        )
+    }
+
     override suspend fun suggest(
         subtype: Subtype,
         content: EditorContent,
@@ -1736,15 +1754,12 @@ class LatinLanguageProvider(context: Context) : SpellingProvider, SuggestionProv
         // Jasse: language-specific evidence complements the existing tap/edit-distance readers.
         // A word accepted in English, or learned locally even once, is protected before splitting.
         // Only key presses may trigger a silent replacement; pasted/dictated text gets tap offers.
-        val swedishProposals = if (index.lang == "sv" && !isKnown) {
-            SwedishCorrections.propose(
+        val swedishProposals = if (!isKnown) {
+            swedishCorrectionsFor(
                 word = word,
-                frequency = { index.freq[it] ?: 0 },
-                pairCount = bigramsFor(subtype)::countOf,
+                subtype = subtype,
+                index = index,
                 protectedWord = (learnedSnapshot?.scoreOfKey(index.fold(word)) ?: 0.0) > 0.0,
-                strength = prefs.correction.autoCorrectStrength.get(),
-                spellingEnabled = prefs.correction.swedishSpelling.get(),
-                spacingEnabled = prefs.correction.swedishMissingSpaces.get(),
             )
         } else emptyList()
         if (swedishProposals.isNotEmpty()) {
@@ -2203,7 +2218,10 @@ class LatinLanguageProvider(context: Context) : SpellingProvider, SuggestionProv
             false
         } else {
             val reading = tapPoints?.let { beamReadingOf(trimmed, subtype, index, it) }
-            WordLearningGate.looksLikeASlip(
+            // Otherwise ignoring a spacing offer once would teach the joined typo, and that learned
+            // entry would suppress the offer on the next attempt. Explicitly trusted words bypass this.
+            val swedishCorrection = swedishCorrectionsFor(trimmed, subtype, index, protectedWord = false).isNotEmpty()
+            swedishCorrection || WordLearningGate.looksLikeASlip(
                 typedWord = trimmed,
                 hadTapEvidence = tapPoints != null,
                 beamCorrection = reading?.first,

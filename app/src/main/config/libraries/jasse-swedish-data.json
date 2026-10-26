@@ -1,0 +1,12 @@
+{
+  "uniqueId": "jasse-swedish-data",
+  "name": "Jasse Swedish dictionary and context data",
+  "description": "73,756 words and 250,000 context entries, bundled unchanged from Dictate Keyboard release assets. OPUS/OpenSubtitles word frequencies and Leipzig Corpora Collection context data.",
+  "developers": [
+    { "name": "OPUS / J. Tiedemann", "organisationUrl": "https://opus.nlpl.eu/" },
+    { "name": "Universität Leipzig / Sächsische Akademie der Wissenschaften / InfAI", "organisationUrl": "https://wortschatz.uni-leipzig.de/" },
+    { "name": "DevEmperor — dictionary generation", "organisationUrl": "https://github.com/DevEmperor/DictateKeyboard" }
+  ],
+  "website": "https://github.com/jjassee98/DictateKeyboard/blob/jasse/first-test-apk/docs/SWEDISH-DATA.md",
+  "licenses": ["jasse-swedish-data-notices"]
+}

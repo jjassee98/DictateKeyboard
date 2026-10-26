@@ -5,6 +5,7 @@
 package dev.patrickgold.florisboard.ime.nlp.latin
 
 import java.security.MessageDigest
+import dev.patrickgold.florisboard.ime.nlp.WordOrigin
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -110,6 +111,16 @@ class SwedishCorrectionsTest {
         val trigrams = NgramIndex.parse(EvalKeyboard.dictFile("sv_trigrams.txt").readText())
         assertTrue(trigrams.topContinuations("det är", 3).isNotEmpty())
         assertTrue(pairs.topContinuations("jag", 3).isNotEmpty())
+    }
+
+    @Test
+    fun ignoredTypoSuggestionsMustNotBeLearnedAsIntentionalWords() {
+        for (typo in listOf("dumärker", "jagvet", "igentligen")) {
+            assertFalse(WordLearningGate.shouldLearn(
+                enabled = true, isPrivateField = false, origin = WordOrigin.TYPED,
+                word = typo, isKnownWord = false, cheapCorrectionExists = propose(typo).isNotEmpty(),
+            ), typo)
+        }
     }
 
     @Test
