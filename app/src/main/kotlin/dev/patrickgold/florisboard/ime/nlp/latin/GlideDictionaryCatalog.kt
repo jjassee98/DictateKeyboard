@@ -96,7 +96,7 @@ object GlideDictionaryCatalog {
     )
 
     /** Languages whose dictionary ships inside the APK (ime/dict/<lang>.json) and needs no download. */
-    val BUNDLED = setOf("en", "de")
+    val BUNDLED = setOf("en", "de", "sv")
 
     fun forLang(lang: String): GlideDict? =
         all.firstOrNull { it.lang.equals(lang, ignoreCase = true) }

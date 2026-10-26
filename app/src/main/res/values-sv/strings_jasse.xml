@@ -1,0 +1,6 @@
+<resources>
+    <string name="jasse_swedish_spelling_title">Förbättrad svensk stavning</string>
+    <string name="jasse_swedish_spelling_summary">Föreslå rättningar av vanliga svenska felstavningar. Egna ord och ord i dina andra tangentbordsspråk skyddas.</string>
+    <string name="jasse_swedish_spacing_title">Föreslå saknade mellanslag</string>
+    <string name="jasse_swedish_spacing_summary">Föreslå ”du märker” för ”dumärker”. Bara välbelagda fraser ersätter skriven text vid mellanslag; osäkra uppdelningar kräver ett tryck.</string>
+</resources>

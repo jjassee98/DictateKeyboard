@@ -57,7 +57,7 @@ object TrigramCatalog {
      * gets the finished engine rather than a version of it that improves later. It costs 1.8 MB of
      * download size once, against 1.8 MB fetched by nearly every user anyway.
      */
-    val BUNDLED = setOf("en")
+    val BUNDLED = setOf("en", "sv")
 
     /**
      * Every downloadable language; English is absent because it is bundled, see [BUNDLED]. A language

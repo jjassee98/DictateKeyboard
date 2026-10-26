@@ -1,0 +1,104 @@
+name: Jasse test APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['jasse/**']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jasse-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: '14742923'
+          packages: 'platform-tools'
+          log-accepted-android-sdk-licenses: false
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+      - name: Install pinned Android tools
+        run: >-
+          sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+          'ndk;29.0.14206865' 'cmake;4.1.2'
+      - name: Cache pinned speech and translation binaries
+        id: native
+        uses: actions/cache@v4
+        with:
+          path: |
+            app/libs/sherpa-onnx-*.jar
+            app/libs/onnxruntime-android-*.jar
+            app/src/main/jniLibs
+          key: jasse-native-${{ runner.os }}-${{ hashFiles('tools/fetch-sherpa-onnx.sh', 'tools/bergamot/build-android.sh', 'tools/bergamot/CMakeLists.txt', 'tools/bergamot/jni/**', 'tools/bergamot/patches/**', 'gradle/tools.versions.toml') }}
+      - name: Fetch verified speech libraries
+        run: bash tools/fetch-sherpa-onnx.sh
+      - name: Build offline translation engine
+        if: steps.native.outputs.cache-hit != 'true'
+        run: bash tools/bergamot/build-android.sh
+      - name: Configure optional stable test signing
+        env:
+          JASSE_TEST_KEYSTORE_BASE64: ${{ secrets.JASSE_TEST_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$JASSE_TEST_KEYSTORE_BASE64" ]; then
+            umask 077
+            printf '%s' "$JASSE_TEST_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/jasse-test.keystore"
+            echo "ORG_GRADLE_PROJECT_jasseTestKeystore=$RUNNER_TEMP/jasse-test.keystore" >> "$GITHUB_ENV"
+          else
+            echo '::notice::Temporary debug certificate: updating an APK signed with a different certificate requires uninstalling it first. See docs/JASSE.md.'
+          fi
+      - name: Run shared dictation and provider tests
+        run: ./gradlew :lib:dictate-core:testDebugUnitTest --max-workers=2 --console=plain
+      - name: Run Swedish and language-engine regression tests
+        run: ./gradlew :app:testDebugUnitTest --max-workers=2 --console=plain
+      - name: Build installable APK
+        run: ./gradlew :app:assembleDebug -PjasseArm64Only=true --max-workers=2 --console=plain
+      - name: Verify Android signature and 16 KB alignment
+        run: |
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/36.0.0/zipalign" -c -P 16 4 app/build/outputs/apk/debug/app-debug.apk
+      - name: Package test APK and checksum
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk dist/Jasse-Keyboard-test.apk
+          cp docs/JASSE.md dist/INSTALLATION.md
+          cp docs/SWEDISH-DATA.md dist/SWEDISH-DATA.md
+          cp NOTICE dist/NOTICE.txt
+          cp LICENSE dist/LICENSE.txt
+          cd dist
+          sha256sum Jasse-Keyboard-test.apk > SHA256SUMS.txt
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jasse-Keyboard-test-${{ github.run_number }}
+          path: dist/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jasse-test-reports-${{ github.run_number }}
+          path: |
+            app/build/reports/tests/testDebugUnitTest/
+            lib/dictate-core/build/reports/tests/testDebugUnitTest/
+            app/build/test-results/testDebugUnitTest/
+            lib/dictate-core/build/test-results/testDebugUnitTest/
+          retention-days: 14
+          if-no-files-found: warn

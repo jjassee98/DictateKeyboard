@@ -67,5 +67,7 @@ has not reached yet.
   only where the bare spelling is not a word of its own, so this list is what decides it.
 
 ## Bundled languages
-English (`en`, from the upstream FlorisBoard dictionary) and German (`de`) ship inside the app; all other
-languages download on demand.
+In Jasse Keyboard, English (`en`, from the upstream FlorisBoard dictionary), German (`de`) and Swedish
+(`sv`) ship inside the app. Swedish bigram and trigram tables are also bundled, unmodified from the
+upstream releases. See `docs/SWEDISH-DATA.md` for source URLs and SHA-256 checksums.
+Other languages download on demand.
